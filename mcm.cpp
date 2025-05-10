@@ -32,8 +32,18 @@ int main()
   }
   time_t start,end;
   time(&start);
-  vector<vector<int>> dp(n,vector<int>(n,-1));
-    int result = f(arr, 1, n - 1, dp);
+  vector<vector<int>> dp(n,vector<int>(n,0));
+    for (int len=2;len<n;len++){
+        for (int i=1;i<n-len+1;i++){
+            int j = i+len-1;
+            dp[i][j]=1e9;
+            for(int k=i;k<j;k++){
+                int cost = (arr[i-1]*arr[k]*arr[j]) + dp[i][k]+dp[k+1][j];
+                dp[i][j] = min(dp[i][j],cost);
+            }
+        }
+    }
+    int result = dp[1][n-1];
 
     time(&end); // end time
 
